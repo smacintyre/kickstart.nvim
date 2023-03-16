@@ -133,9 +133,11 @@ require('lazy').setup({
     },
   },
 
-  { -- Free dracula theme 
+  {
+    -- Free dracula theme
     'dracula/vim',
-    as = 'dracula',
+    name = 'dracula',
+    lazy = true,
     priority = 1000,
     config = function()
       vim.cmd.colorscheme 'dracula'
@@ -149,7 +151,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
+        theme = 'dracula',
         component_separators = '|',
         section_separators = '',
       },
@@ -168,7 +170,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  { 'numToStr/Comment.nvim',         opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -198,7 +200,7 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
+  require 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
   -- NOTE: The import below automatically adds your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -251,6 +253,11 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
+-- Set colorscheme
+vim.g.dracula_colorterm = 0
+-- vim.cmd [[colorscheme dracula_pro_van_helsing]]
+vim.cmd [[colorscheme dracula]]
+
 -- Enable more natural splitting
 vim.o.splitbelow = true
 vim.o.splitright = true
@@ -276,14 +283,14 @@ vim.bo.formatoptions = vim.bo.formatoptions .. 'l'
 
 -- Draw a line at 80 columns
 vim.wo.colorcolumn = "80"
-vim.api.nvim_set_hl(0, 'ColorColumn', {ctermbg=235, bg='#2c2d27'})
+vim.api.nvim_set_hl(0, 'ColorColumn', { ctermbg = 235, bg = '#2c2d27' })
 
 -- Hightlight current line but only when in the window
 vim.api.nvim_create_autocmd('WinEnter', {
-    callback = function () vim.o.cursorline = true end
+  callback = function() vim.o.cursorline = true end
 })
 vim.api.nvim_create_autocmd('WinLeave', {
-    callback = function () vim.o.cursorline = false end
+  callback = function() vim.o.cursorline = false end
 })
 vim.o.cursorline = true
 
@@ -480,7 +487,6 @@ local servers = {
   pyright = {},
   -- rust_analyzer = {},
   tsserver = {},
-
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
