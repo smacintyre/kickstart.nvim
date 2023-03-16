@@ -133,12 +133,12 @@ require('lazy').setup({
     },
   },
 
-  {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+  { -- Free dracula theme 
+    'dracula/vim',
+    as = 'dracula',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      vim.cmd.colorscheme 'dracula'
     end,
   },
 
@@ -214,10 +214,10 @@ require('lazy').setup({
 -- NOTE: You can change these options as you wish!
 
 -- Set highlight on search
-vim.o.hlsearch = false
+-- vim.o.hlsearch = false
 
 -- Make line numbers default
-vim.wo.number = true
+-- vim.wo.number = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -250,6 +250,52 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+
+-- Enable more natural splitting
+vim.o.splitbelow = true
+vim.o.splitright = true
+
+-- Don't add extra spaces when joining lines
+vim.o.joinspaces = false
+
+-- Sane tab handling
+vim.o.expandtab = true
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.softtabstop = 2
+--
+-- Preview substitions
+vim.o.inccommand = 'split'
+
+-- Always report number of lines changed
+vim.o.report = 0
+
+-- Text wrap at 78 chars unless it was already too long
+vim.o.textwidth = 78
+vim.bo.formatoptions = vim.bo.formatoptions .. 'l'
+
+-- Draw a line at 80 columns
+vim.wo.colorcolumn = "80"
+vim.api.nvim_set_hl(0, 'ColorColumn', {ctermbg=235, bg='#2c2d27'})
+
+-- Hightlight current line but only when in the window
+vim.api.nvim_create_autocmd('WinEnter', {
+    callback = function () vim.o.cursorline = true end
+})
+vim.api.nvim_create_autocmd('WinLeave', {
+    callback = function () vim.o.cursorline = false end
+})
+vim.o.cursorline = true
+
+-- Display tabs, trailing whitespace, and nonbreaking space and for long lines
+vim.wo.list = true
+vim.wo.listchars = "tab:>-,trail:•,nbsp:¬,extends:»,precedes:«"
+
+-- Better display for messages
+vim.go.cmdheight = 2
+
+-- Show matching brackets
+vim.go.showmatch = true
 
 -- [[ Basic Keymaps ]]
 
@@ -310,7 +356,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'terraform', 'dockerfile', 'gitignore', 'gitcommit', 'java', 'markdown', 'toml' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
@@ -431,9 +477,9 @@ end
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  -- pyright = {},
+  pyright = {},
   -- rust_analyzer = {},
-  -- tsserver = {},
+  tsserver = {},
 
   lua_ls = {
     Lua = {
