@@ -133,20 +133,19 @@ require('lazy').setup({
     },
   },
 
-  {
-    -- Free dracula theme
-    'dracula/vim',
-    name = 'dracula',
-    lazy = false,
-    priority = 1000,
-  },
+  -- {
+  --   -- Free dracula theme
+  --   'dracula/vim',
+  --   name = 'dracula',
+  --   lazy = false,
+  --   priority = 1000,
+  -- },
 
   {
     -- Load Dracula Pro
-    dir = '~/.local/share/nvim/site/pack/themes/start',
-    name = 'dracula_pro',
+    dir = '~/Projects/dracula_pro',
     lazy = false,
-    priority = 1000,
+    priority = 1001,
   },
 
   {
@@ -260,8 +259,7 @@ vim.o.termguicolors = true
 
 -- Set colorscheme
 vim.g.dracula_colorterm = 0
--- vim.cmd [[colorscheme dracula_pro_van_helsing]]
-vim.cmd.colorscheme 'dracula'
+vim.cmd.colorscheme 'dracula_pro_van_helsing'
 
 -- Enable more natural splitting
 vim.o.splitbelow = true
@@ -275,7 +273,7 @@ vim.o.expandtab = true
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 vim.o.softtabstop = 2
---
+
 -- Preview substitions
 vim.o.inccommand = 'split'
 
