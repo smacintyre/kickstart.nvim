@@ -143,7 +143,7 @@ require('lazy').setup({
 
   {
     -- Load Dracula Pro
-    dir = '~/Projects/dracula_pro',
+    'itsgg/dracula_pro-vim',
     lazy = false,
     priority = 1001,
   },
