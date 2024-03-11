@@ -90,8 +90,11 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Set shell to bash
+vim.opt.shell = '/bin/bash'
+
 -- Set to true if you have a Nerd Font installed
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -99,7 +102,7 @@ vim.g.have_nerd_font = false
 --  For more options, you can see `:help option-list`
 
 -- Make line numbers default
-vim.opt.number = true
+vim.opt.number = false
 -- You can also add relative line numbers, for help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.opt.relativenumber = true
@@ -113,7 +116,7 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+-- vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -136,20 +139,53 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
+-- Don't add extra spaces when joining lines
+vim.opt.joinspaces = false
+
+-- Sane tab handling
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+
 -- Sets how neovim will display certain whitespace in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = '>-', trail = '•', nbsp = '␣', extends = '»', precedes = '«' }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
 
--- Show which line your cursor is on
+-- Text wrap at 78 chars unless it was already too long
+vim.opt.textwidth = 78
+vim.bo.formatoptions = vim.bo.formatoptions .. 'l'
+
+-- Draw a line at 80 columns
+vim.wo.colorcolumn = '80'
+vim.api.nvim_set_hl(0, 'ColorColumn', { ctermbg = 235, bg = '#2c2d27' })
+
+-- Hightlight current line but only when in the window
+vim.api.nvim_create_autocmd('WinEnter', {
+  callback = function()
+    vim.opt.cursorline = true
+  end,
+})
+vim.api.nvim_create_autocmd('WinLeave', {
+  callback = function()
+    vim.opt.cursorline = false
+  end,
+})
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 5
+
+-- Better display for messages
+vim.opt_global.cmdheight = 2
+
+-- Show matching brackets
+vim.opt_global.showmatch = true
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -534,8 +570,17 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
+        awk_ls = {},
+        pyright = {},
+        rust_analyzer = {},
+        bashls = {},
+        cssls = {},
+        dockerls = {},
+        helm_ls = {},
+        terraformls = {},
+        tsserver = {},
+        tailwindcss = {},
+        yamlls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -728,7 +773,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      -- vim.cmd.colorscheme 'tokyonight-night'
 
       -- You can configure highlights by doing something like
       vim.cmd.hi 'Comment gui=none'
@@ -737,7 +782,6 @@ require('lazy').setup({
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
-
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
@@ -810,14 +854,14 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.indent_line',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you have a Nerd Font, set icons to an empty table which will use the
